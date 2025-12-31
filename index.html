@@ -108,7 +108,7 @@ audio.addEventListener("loadedmetadata", () => {
   lines[0].classList.add("active");
 
   timer = setInterval(() => {
-    if (index < totalLines - 1) {
+    if (index < totalLines +1) {
       lines[index].classList.remove("active");
       index++;
       lines[index].classList.add("active");
@@ -124,6 +124,7 @@ audio.addEventListener("ended", () => {
 
 </body>
 </html>
+
 
 
 
