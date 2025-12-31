@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>New Year Surprise 🎁</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: 'Comic Sans MS', 'Poppins', cursive;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  max-width: 420px;
+  border-radius: 25px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+#inside { display: none; }
+
+button {
+  padding: 12px 28px;
+  font-size: 16px;
+  border: none;
+  border-radius: 30px;
+  background: #ff5e78;
+  color: white;
+  cursor: pointer;
+}
+
+.lyrics span {
+  display: block;
+  margin: 6px 0;
+  color: #777;
+  transition: 0.3s;
+}
+
+.lyrics .active {
+  color: #ff3b5f;
+  font-weight: bold;
+  font-size: 17px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- COVER PAGE -->
+<div class="card" id="cover">
+  <h2>🎁 A Tiny Surprise</h2>
+  <p>Click to open a New Year wish</p>
+  <button onclick="openCard()">Click to Open 💖</button>
+</div>
+
+<!-- INSIDE PAGE -->
+<div class="card" id="inside">
+  <h2>Happy New Year ✨</h2>
+
+  <div class="lyrics" id="lyrics">
+    <span data-time="0">Hey hi… New Year came,</span>
+    <span data-time="4">Made a wish, won’t say the name</span>
+    <span data-time="8">Little smile, little cheer,</span>
+    <span data-time="12">That’s my gift for you this year</span>
+
+    <span data-time="18">I don’t know songs, I don’t know rhyme,</span>
+    <span data-time="23">Funny thoughts just cross my mind</span>
+    <span data-time="28">If joy got lost and asked where to go,</span>
+    <span data-time="34">Someone like you would surely know</span>
+
+    <span data-time="42">If you laugh, the day feels right,</span>
+    <span data-time="47">If you smile, the world feels light</span>
+    <span data-time="52">Stay the same, calm and true,</span>
+    <span data-time="57">This tiny tune is just for you 💖</span>
+  </div>
+
+  <audio id="song" preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+const audio = document.getElementById("song");
+const lines = document.querySelectorAll(".lyrics span");
+
+function openCard() {
+  document.getElementById("cover").style.display = "none";
+  document.getElementById("inside").style.display = "block";
+
+  audio.currentTime = 0;
+  audio.play();
+}
+
+audio.addEventListener("timeupdate", () => {
+  const current = audio.currentTime;
+  lines.forEach((line, index) => {
+    const start = Number(line.dataset.time);
+    const next = lines[index + 1]?.dataset.time || audio.duration;
+    line.classList.toggle(
+      "active",
+      current >= start && current < next
+    );
+  });
+});
+</script>
+
+</body>
+</html>
