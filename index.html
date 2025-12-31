@@ -63,56 +63,54 @@ button {
 <!-- INSIDE PAGE -->
 <div class="card" id="inside">
   <h2>Happy New Year ✨</h2>
+<div class="lyrics" id="lyrics">
+  <span>Hey hi… New Year came,</span>
+  <span>Made a wish, won’t say the name</span>
+  <span>Little smile, little cheer,</span>
+  <span>That’s my gift for you this year</span>
 
-  <div class="lyrics" id="lyrics">
-    <span data-time="1.6">Hey hi… New Year came,</span>
-    <span data-time="5.2">Made a wish, won’t say the name</span>
-    <span data-time="6">Little smile, little cheer,</span>
-    <span data-time="6.4">That’s my gift for you this year</span>
+  <span>I don’t know songs, I don’t know rhyme,</span>
+  <span>Funny thoughts just cross my mind</span>
+  <span>If joy got lost and asked where to go,</span>
+  <span>Someone like you would surely know</span>
 
-    <span data-time="6.4">I don’t know songs, I don’t know rhyme,</span>
-    <span data-time="6.4">Funny thoughts just cross my mind</span>
-    <span data-time="6.4">If joy got lost and asked where to go,</span>
-    <span data-time="10">Someone like you would surely know</span>
+  <span>If you laugh, the day feels right,</span>
+  <span>If you smile, the world feels light</span>
+  <span>Stay the same, calm and true,</span>
+  <span>This tiny tune is just for you 💖</span>
+</div>
 
-    <span data-time="10">If you laugh, the day feels right,</span>
-    <span data-time="10">If you smile, the world feels light</span>
-    <span data-time="6.4">Stay the same, calm and true,</span>
-    <span data-time="12">This tiny tune is just for you 💖</span>
-  </div>
 
   <audio id="song" preload="auto">
     <source src="song.mp3.mp3" type="audio/mpeg">
   </audio>
 </div>
-
 <script>
 const audio = document.getElementById("song");
 const lines = document.querySelectorAll(".lyrics span");
+let currentLine = 0;
 
 function openCard() {
   document.getElementById("cover").style.display = "none";
   document.getElementById("inside").style.display = "block";
-
   audio.currentTime = 0;
   audio.play();
 }
 
-audio.addEventListener("timeupdate", () => {
-  const current = audio.currentTime;
-  lines.forEach((line, index) => {
-    const start = Number(line.dataset.time);
-    const next = lines[index + 1]?.dataset.time || audio.duration;
-    line.classList.toggle(
-      "active",
-      current >= start && current < next
-    );
-  });
+audio.addEventListener("loadedmetadata", () => {
+  const interval = audio.duration / lines.length;
+
+  setInterval(() => {
+    const index = Math.floor(audio.currentTime / interval);
+    lines.forEach(l => l.classList.remove("active"));
+    if (lines[index]) lines[index].classList.add("active");
+  }, 300);
 });
 </script>
 
 </body>
 </html>
+
 
 
 
