@@ -7,7 +7,7 @@
 <style>
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100dvh;
   font-family: 'Comic Sans MS', 'Poppins', cursive;
   background: linear-gradient(135deg, #ffdde1, #ee9ca7);
   display: flex;
@@ -17,14 +17,12 @@ body {
 
 .card {
   background: white;
-  padding: 30px;
-  max-width: 420px;
+  padding: 25px;
+  max-width: 90%;
   border-radius: 25px;
   box-shadow: 0 25px 50px rgba(0,0,0,0.2);
   text-align: center;
 }
-
-#inside { display: none; }
 
 button {
   padding: 12px 28px;
@@ -36,11 +34,15 @@ button {
   cursor: pointer;
 }
 
+.lyrics {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 .lyrics span {
   display: block;
   margin: 6px 0;
   color: #777;
-  transition: 0.3s;
 }
 
 .lyrics .active {
@@ -53,80 +55,71 @@ button {
 
 <body>
 
-<!-- COVER PAGE -->
+<!-- COVER -->
 <div class="card" id="cover">
   <h2>🎁 A Tiny Surprise</h2>
   <p>Click to open a New Year wish</p>
   <button onclick="openCard()">Click to Open 💖</button>
 </div>
 
-<!-- INSIDE PAGE -->
-<div class="lyrics" id="lyrics">
-  <span>Hey hi… New Year came,</span>
-  <span>Made a wish, won’t say the name</span>
-  <span>Little smile, little cheer,</span>
-  <span>That’s my gift for you this year</span>
+<!-- INSIDE -->
+<div class="card" id="inside" style="display:none;">
+  <div class="lyrics">
+    <span>Hey hi… New Year came,</span>
+    <span>Made a wish, won’t say the name</span>
+    <span>Little smile, little cheer,</span>
+    <span>That’s my gift for you this year</span>
 
-  <span>I don’t know songs, I don’t know rhyme,</span>
-  <span>Funny thoughts just cross my mind</span>
-  <span>If joy got lost and asked where to go,</span>
-  <span>Someone like you would surely know</span>
+    <span>I don’t know songs, I don’t know rhyme,</span>
+    <span>Funny thoughts just cross my mind</span>
+    <span>If joy got lost and asked where to go,</span>
+    <span>Someone like you would surely know</span>
 
-  <span>If you laugh, the day feels right,</span>
-  <span>If you smile, the world feels light</span>
-  <span>Stay the same, calm and true,</span>
-  <span>This tiny tune is just for you 💖</span>
+    <span>If you laugh, the day feels right,</span>
+    <span>If you smile, the world feels light</span>
+    <span>Stay the same, calm and true,</span>
+    <span>This tiny tune is just for you 💖</span>
+  </div>
 </div>
 
-  <audio id="song" preload="auto">
-    <source src="song.mp3.mp3" type="audio/mpeg">
-  </audio>
-</div>
+<audio id="song">
+  <source src="song.mp3.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 const audio = document.getElementById("song");
 const lines = document.querySelectorAll(".lyrics span");
-let timer = null;
+
 let index = 0;
+let timer;
 
 function openCard() {
   document.getElementById("cover").style.display = "none";
   document.getElementById("inside").style.display = "block";
 
   audio.currentTime = 0;
-  audio.play();
+  audio.play().then(startLyrics);
 }
 
-audio.addEventListener("loadedmetadata", () => {
+function startLyrics() {
   const totalLines = lines.length;
   const lineDuration = audio.duration / totalLines;
 
-  // clear previous
   lines.forEach(l => l.classList.remove("active"));
   index = 0;
-
-  // highlight first line
   lines[0].classList.add("active");
 
   timer = setInterval(() => {
-    if (index < totalLines +1) {
+    if (index < totalLines - 1) {
       lines[index].classList.remove("active");
       index++;
       lines[index].classList.add("active");
     }
   }, lineDuration * 1000);
-});
+}
 
-audio.addEventListener("ended", () => {
-  clearInterval(timer);
-  // keep last line highlighted
-});
+audio.addEventListener("ended", () => clearInterval(timer));
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
